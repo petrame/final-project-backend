@@ -130,6 +130,7 @@ if (process.env.RESET_DATABASE) {
       cloudinary.uploader
         .upload(imagePath, {
           folder: `image_logo/${item.category.toLocaleLowerCase()}`,
+          secure: true,
           use_filename: true,
           unique_filename: false,
           overwrite: true,
@@ -140,7 +141,7 @@ if (process.env.RESET_DATABASE) {
           responsive_placeholder: "blank",
         })
         .then((result) => {
-          item.img_url = result.url;
+          item.img_url = result.secure_url;
           item.img_id = result.public_id;
           const newLocal = new Local(item);
           newLocal.save();
@@ -164,11 +165,10 @@ if (process.env.RESET_DATABASE) {
           responsive_placeholder: "blank",
         })
         .then((result) => {
-          categoryItem.img_url = result.url;
+          categoryItem.img_url = result.secure_url;
           const newCategory = new LocalCategory(categoryItem);
           localCategories.push(newCategory);
           newCategory.save();
-          console.log(localCategories);
         })
         .catch((error) => console.log(error));
     });
