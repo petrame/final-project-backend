@@ -420,7 +420,7 @@
       "img": "apotek_hjartat_logo.jpg",
       "street_address": "Torslanda torg 3",
       "zip_code": "423 32 Torslanda",
-      "geolocation": "57.7233757719704, 11.767026311673435",
+      "geolocation": { "coordinates": [57.7233757719704, 11.767026311673435] },
       "phone_number": "0771-405 405",
       "web_shop": "https://www.apotekhjartat.se/",
       "url": "https://www.apotekhjartat.se/hitta-apotek-hjartat/?q=torslanda"
@@ -432,7 +432,7 @@
       "img": "kronans_apotek_logo.png",
       "street_address": "Gamla Flygplatsvägen 40",
       "zip_code": "423 37 Torslanda",
-      "geolocation": "57.710066677604736, 11.774632855850065",
+      "geolocation": { "coordinates": [57.710066677604736, 11.774632855850065] },
       "phone_number": "0771-612 612",
       "web_shop": "https://www.kronansapotek.se/",
       "url": "https://www.kronansapotek.se/store/Kronans%20Apotek%20Torslanda"

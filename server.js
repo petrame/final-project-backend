@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import crypto from "crypto";
@@ -115,7 +114,7 @@ const port = process.env.PORT || 8080;
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json())
 
 // Clearing and populating database
 if (process.env.RESET_DATABASE) {
@@ -138,6 +137,7 @@ if (process.env.RESET_DATABASE) {
           dpr: "auto",
           responsive: "true",
           crop: "scale",
+          quality: "auto:good",
           responsive_placeholder: "blank",
         })
         .then((result) => {
@@ -162,6 +162,7 @@ if (process.env.RESET_DATABASE) {
           dpr: "auto",
           responsive: "true",
           crop: "scale",
+          loading: "lazy",
           responsive_placeholder: "blank",
         })
         .then((result) => {
@@ -229,8 +230,8 @@ app.post("/sessions", async (req, res) => {
 });
 
 // Endpoint for update user
-app.put("/:id/user", authenticateUser);
-app.put("/:id/user", async (req, res) => {
+app.put("/users/:id/", authenticateUser);
+app.put("/users/:id/", async (req, res) => {
   const accessToken = req.header("Authorization");
   const { firstName, lastName, email } = req.body;
   try {
@@ -242,8 +243,8 @@ app.put("/:id/user", async (req, res) => {
 });
 
 // Authenticate user
-app.get("/:id/user", authenticateUser);
-app.get("/:id/user", async (req, res) => {
+app.get("/users/:id/", authenticateUser);
+app.get("/users/:id/", async (req, res) => {
   const accessToken = req.header("Authorization");
   const user = await User.findOne({ accessToken: accessToken });
   // .populate('favourites');
@@ -251,16 +252,16 @@ app.get("/:id/user", async (req, res) => {
 });
 
 // Get user favourites
-app.get("/:id/favourites", authenticateUser);
-app.get("/:id/favourites", async (req, res) => {
+app.get("/users/:id/favourites", authenticateUser);
+app.get("/users/:id/favourites", async (req, res) => {
   const accessToken = req.header("Authorization");
   const user = await User.findOne({ accessToken: accessToken });
   res.json({ message: `Favourites: ${user.favourites}` });
 });
 
 // Update user favourites
-app.put("/:id/favourites", authenticateUser);
-app.put("/:id/favourites", async (req, res) => {
+app.put("/users/:id/favourites", authenticateUser);
+app.put("/users/:id/favourites", async (req, res) => {
   const accessToken = req.header("Authorization");
   const { favourites } = req.body;
   try {
@@ -316,23 +317,12 @@ app.get("/locals/:category", async (req, res) => {
   try {
     const { category } = req.params;
     const localCategory = await Local.find({ category }).exec();
+    console.log(localCategory)
     res.json(localCategory);
   } catch (err) {
     res
       .status(400)
       .json({ message: "Could not find category items.", errors: err });
-  }
-});
-
-// Get local categories endpoint
-app.get("/locals/categories", async (req, res) => {
-  try {
-    const allCategories = await LocalCategory.find();
-    res.json(allCategories);
-  } catch (err) {
-    res
-      .status(400)
-      .json({ message: "Could not find categories.", errors: err });
   }
 });
 
