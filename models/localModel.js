@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import slug from 'mongoose-slug-generator';
+
+mongoose.plugin(slug);
 
 const Schema = mongoose.Schema;
 
@@ -45,7 +48,8 @@ const localSchema = new Schema({
     },
     url: {
         type: String,
-    }
+    },
+    slug: { type: String, slug: "name" }
 });
 const Local = mongoose.model("Local", localSchema);
 module.exports = Local;

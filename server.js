@@ -129,7 +129,6 @@ if (process.env.RESET_DATABASE) {
       cloudinary.uploader
         .upload(imagePath, {
           folder: `image_logo/${item.category.toLocaleLowerCase()}`,
-          secure: true,
           use_filename: true,
           unique_filename: false,
           overwrite: true,
@@ -275,32 +274,22 @@ app.put("/users/:id/favourites", async (req, res) => {
   res.json({ message: `Favourites: ${user.favourites}` });
 });
 
+
 // Locals endpoints
-app.get("/locals"),
-  async (req, res) => {
-    try {
-      const locals = await Local.find();
-      res.json(locals);
-    } catch (err) {
-      res.status(400).json({
-        message: "Could not find locals.",
-        errors: err,
-      });
-    }
-  };
+// app.get("/locals"),
+//   async (req, res) => {
+//     try {
+//       const locals = await Local.find();
+//       res.json(locals);
+//     } catch (err) {
+//       res.status(400).json({
+//         message: "Could not find locals.",
+//         errors: err,
+//       });
+//     }
+//   };
 
-// Get one local endpoint
-app.get("/local/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const newLocal = await Local.findById(id).exec();
-    res.json(newLocal);
-  } catch (err) {
-    throw err;
-  }
-});
-
-// Get local categories endpoint
+// Categories list endpoint
 app.get("/locals/categories", async (req, res) => {
   try {
     const allCategories = await LocalCategory.find();
@@ -312,12 +301,11 @@ app.get("/locals/categories", async (req, res) => {
   }
 });
 
-// Get locals category list endpoint
-app.get("/locals/:category", async (req, res) => {
+// Category list endpoint
+app.get("/locals/categories/:category", async (req, res) => {
   try {
     const { category } = req.params;
     const localCategory = await Local.find({ category }).exec();
-    console.log(localCategory)
     res.json(localCategory);
   } catch (err) {
     res
@@ -325,6 +313,19 @@ app.get("/locals/:category", async (req, res) => {
       .json({ message: "Could not find category items.", errors: err });
   }
 });
+
+// Get one local endpoint
+app.get("/locals/:slug", async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const newLocal = await Local.findOne({slug}).exec();
+    res.json(newLocal);
+  } catch (err) {
+    throw err;
+  }
+});
+
+
 
 // Post new local
 app.post("/locals", parser.single("img_url"), async (req, res) => {
