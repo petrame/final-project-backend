@@ -276,18 +276,18 @@ app.put("/users/:id/favourites", async (req, res) => {
 
 
 // Locals endpoints
-// app.get("/locals"),
-//   async (req, res) => {
-//     try {
-//       const locals = await Local.find();
-//       res.json(locals);
-//     } catch (err) {
-//       res.status(400).json({
-//         message: "Could not find locals.",
-//         errors: err,
-//       });
-//     }
-//   };
+app.get("/locals"),
+  async (req, res) => {
+    try {
+      const locals = await Local.find();
+      res.json(locals);
+    } catch (err) {
+      res.status(400).json({
+        message: "Could not find locals.",
+        errors: err,
+      });
+    }
+  };
 
 // Categories list endpoint
 app.get("/locals/categories", async (req, res) => {
@@ -302,7 +302,7 @@ app.get("/locals/categories", async (req, res) => {
 });
 
 // Category list endpoint
-app.get("/locals/categories/:category", async (req, res) => {
+app.get("/locals/:category", async (req, res) => {
   try {
     const { category } = req.params;
     const localCategory = await Local.find({ category }).exec();
@@ -315,7 +315,7 @@ app.get("/locals/categories/:category", async (req, res) => {
 });
 
 // Get one local endpoint
-app.get("/locals/:slug", async (req, res) => {
+app.get("/local/:slug", async (req, res) => {
   try {
     const { slug } = req.params;
     const newLocal = await Local.findOne({slug}).exec();
