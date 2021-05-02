@@ -13,6 +13,12 @@ import localCategoriesData from "./data/local-categories.json";
 
 dotenv.config();
 
+const port = process.env.PORT || 8080;
+const app = express();
+
+app.use(cors());
+app.use(express.json())
+
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/torslandalocals";
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = Promise;
@@ -110,11 +116,6 @@ const LocalCategory = new mongoose.model("LocalCategory", {
   img_url: String,
 });
 
-const port = process.env.PORT || 8080;
-const app = express();
-
-app.use(cors());
-app.use(express.json())
 
 // Clearing and populating database
 if (process.env.RESET_DATABASE) {
