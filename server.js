@@ -290,6 +290,17 @@ app.get("/locals"),
     }
   };
 
+  // Get one local endpoint
+app.get("/local/:slug", async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const newLocal = await Local.findOne({slug}).exec();
+    res.json(newLocal);
+  } catch (err) {
+    throw err;
+  }
+});
+
 // Categories list endpoint
 app.get("/locals/categories", async (req, res) => {
   try {
@@ -314,19 +325,6 @@ app.get("/locals/:category", async (req, res) => {
       .json({ message: "Could not find category items.", errors: err });
   }
 });
-
-// Get one local endpoint
-app.get("/local/:slug", async (req, res) => {
-  try {
-    const { slug } = req.params;
-    const newLocal = await Local.findOne({slug}).exec();
-    res.json(newLocal);
-  } catch (err) {
-    throw err;
-  }
-});
-
-
 
 // Post new local
 app.post("/locals", parser.single("img_url"), async (req, res) => {
