@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 const app = express();
 
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/torslandalocals";
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -115,7 +115,6 @@ const LocalCategory = new mongoose.model("LocalCategory", {
   display_name: String,
   img_url: String,
 });
-
 
 // Clearing and populating database
 if (process.env.RESET_DATABASE) {
@@ -275,7 +274,6 @@ app.put("/users/:id/favourites", async (req, res) => {
   res.json({ message: `Favourites: ${user.favourites}` });
 });
 
-
 // Locals endpoints
 app.get("/locals"),
   async (req, res) => {
@@ -290,11 +288,11 @@ app.get("/locals"),
     }
   };
 
-  // Get one local endpoint
-app.get("/local/:slug", cors(), async (req, res) => {
+// Get one local endpoint
+app.get("/local/:id", async (req, res) => {
   try {
-    const { slug } = req.params;
-    const newLocal = await Local.findOne({slug}).exec();
+    const { id } = req.params;
+    const newLocal = await Local.findById(id).exec();
     res.json(newLocal);
   } catch (err) {
     throw err;
