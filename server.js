@@ -291,7 +291,7 @@ app.get("/locals"),
   };
 
   // Get one local endpoint
-app.get("/local/:slug", async (req, res) => {
+app.get("/local/:slug", cors(), async (req, res) => {
   try {
     const { slug } = req.params;
     const newLocal = await Local.findOne({slug}).exec();
